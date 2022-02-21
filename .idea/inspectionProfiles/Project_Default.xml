@@ -1,0 +1,25 @@
+<component name="InspectionProjectProfileManager">
+  <profile version="1.0">
+    <option name="myName" value="Project Default" />
+    <inspection_tool class="PyPackageRequirementsInspection" enabled="true" level="WARNING" enabled_by_default="true">
+      <option name="ignoredPackages">
+        <value>
+          <list size="12">
+            <item index="0" class="java.lang.String" itemvalue="tinydb" />
+            <item index="1" class="java.lang.String" itemvalue="zipp" />
+            <item index="2" class="java.lang.String" itemvalue="PyJWT" />
+            <item index="3" class="java.lang.String" itemvalue="djangorestframework-simplejwt" />
+            <item index="4" class="java.lang.String" itemvalue="django-filter" />
+            <item index="5" class="java.lang.String" itemvalue="Django" />
+            <item index="6" class="java.lang.String" itemvalue="tzdata" />
+            <item index="7" class="java.lang.String" itemvalue="djangorestframework" />
+            <item index="8" class="java.lang.String" itemvalue="importlib-metadata" />
+            <item index="9" class="java.lang.String" itemvalue="Markdown" />
+            <item index="10" class="java.lang.String" itemvalue="pandas" />
+            <item index="11" class="java.lang.String" itemvalue="numpy" />
+          </list>
+        </value>
+      </option>
+    </inspection_tool>
+  </profile>
+</component>
