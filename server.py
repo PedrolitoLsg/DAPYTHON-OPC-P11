@@ -58,6 +58,9 @@ def purchase_places():
 
 
 # TODO: Add route for points display
+@app.route('/rankings', methods=['GET'])
+def show_points():
+    return (clubs, competitions)
 
 
 @app.route('/logout')
