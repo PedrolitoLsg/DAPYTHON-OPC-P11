@@ -54,7 +54,7 @@ def purchase_places():
     club = [c for c in clubs if c['name'] == request.form['club']][0]
     places_required = int(request.form['places']
     # vérifier que la compétition est pas dans le past
-    current_date = dt.now()
+    current_date = dt.datetime.now()
     if current_date > competition['date']:
         if (club['points'] <= places_required) and (places_required <= 12):
             competition['numberOfPlaces'] = int(competition['numberOfPlaces']) - places_required
