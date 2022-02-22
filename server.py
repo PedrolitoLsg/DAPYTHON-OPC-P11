@@ -26,9 +26,9 @@ def index():
     return render_template('index.html')
 
 
+"""Allows connected to see it's club details(points) and future competitions"""
 @app.route('/showSummary', methods=['POST'])
 def show_summary():
-    """Allows connected to see it's club details(points) and future competitions"""
     try:
         club = [club for club in clubs if club['email'] == request.form['email']][0]
         return render_template('welcome.html', club=club, competitions=competitions)
