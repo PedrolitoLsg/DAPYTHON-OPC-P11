@@ -1,8 +1,8 @@
 import json
 from flask import Flask, render_template, request, redirect, flash, url_for
-import datetime as dt
+from datetime import datetime
 
-
+""" Private Functions """
 def load_clubs():
     with open('clubs.json') as c:
         listOfClubs = json.load(c)['clubs']
@@ -20,8 +20,14 @@ app.secret_key = 'something_special'
 competitions = load_competitions()
 clubs = load_clubs()
 
+if __name__ == '__main__':
+    app.run(debug=True)
 
-@app.route('/')
+
+""" PUBLIC FUNCTIONS """
+
+
+@app.route('/', methods=['GET'])
 def index():
     return render_template('index.html')
 
@@ -32,7 +38,7 @@ def show_summary():
     try:
         club = [club for club in clubs if club['email'] == request.form['email']][0]
         return render_template('welcome.html', club=club, competitions=competitions)
-    except IndexError:
+    except ValueError:
         flash('Email was not found. Please try again.')
         return render_template('index.html')
 
@@ -51,25 +57,26 @@ def book(competition, club):
 @app.route('/purchasePlaces', methods=['POST'])
 def purchase_places():
     competition = [c for c in competitions if c['name'] == request.form['competition']][0]
-    club = [c for c in clubs if c['name'] == request.form['club']][0]
-    places_required = int(request.form['places']
-    current_date = dt.datetime.now()
-    if current_date > competition['date']:
-        if (club['points'] <= places_required) and (places_required <= 12):
-            competition['numberOfPlaces'] = int(competition['numberOfPlaces']) - places_required
+    #  club = [c for c in clubs if c['name'] == request.form['club']][0]
+    #  places_required = int(request.form['places'])
+    #  time_now = datetime.datetime.now().time()
+    #  if time_now > competition['date']:
+        #  if (club['points'] <= places_required) and (places_required <= 12):
+            #  competition['numberOfPlaces'] = int(competition['numberOfPlaces']) - places_required
             # deduct points from the team
-            club['points'] -= places_required
-            flash('Great-booking complete!')
-        else:
-            flash('Your club does  not have enough points, or you booked more than 12 spots')
-    else:
-        flash('It is too late to register to this competitions')
+            #  club['points'] -= places_required
+            #  flash('Great-booking complete!')
+        #  else:
+            #  flash('Your club does  not have enough points, or you booked more than 12 spots')
+    #  else:
+        #  flash('It is too late to register to this competitions')
     return render_template('welcome.html', club=club, competitions=competitions)
 
 
 @app.route('/rankings', methods=['GET'])
 def show_points():
-    return (clubs, competitions)
+    #  This shows the number of points available by clubs
+   return render_template('rankings.html', club=clubs)
 
 
 @app.route('/logout')
