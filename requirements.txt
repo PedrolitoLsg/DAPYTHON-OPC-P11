@@ -28,6 +28,7 @@ py==1.11.0
 pycparser==2.21
 pyparsing==3.0.7
 pytest==7.0.1
+pytest-mock==3.7.0
 pywin32==303
 pyzmq==22.3.0
 requests==2.27.1
