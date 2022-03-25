@@ -64,13 +64,12 @@ def purchase_places():
     places_required = int(request.form['places'])
     time_object = datetime.now()
     comp_time = datetime.strptime(competition['date'], "%Y-%m-%d %H:%M:%S")
-    # 2022-03-24 12:53:00.151212
     if time_object < comp_time:
-        if (int(club['points']) <= places_required):
+        if (int(club['points'])) >= (3*places_required):
             if places_required <= 12 and places_required > 0:
                 flash('Great-booking complete!' + str(places_required) + "spots booked for the " + str(competition))
-                competition['numberOfPlaces'] -= places_required
-                club['points'] -= places_required
+                club['points'] = int(club['points']) - places_required * 3
+                competition['numberOfPlaces'] = int(competition['numberOfPlaces']) - places_required
             else:
                 flash('You can book a maximum of 12 spots per comp')
         else:
