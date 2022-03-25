@@ -52,17 +52,22 @@ def book(competition, club):
 def purchase_places():
     competition = [c for c in competitions if c['name'] == request.form['competition']][0]
     club = [c for c in clubs if c['name'] == request.form['club']][0]
-    places_required = int(request.form['places']
-    # vérifier que la compétition est pas dans le past
-    current_date = dt.datetime.now()
-    if current_date > competition['date']:
-        if (club['points'] <= places_required) and (places_required <= 12):
-            competition['numberOfPlaces'] = int(competition['numberOfPlaces']) - places_required
-            flash('Great-booking complete!')
+    places_required = int(request.form['places'])
+    time_object = datetime.now()
+    comp_time = datetime.strptime(competition['date'], "%Y-%m-%d %H:%M:%S")
+    # 2022-03-24 12:53:00.151212
+    if time_object < comp_time:
+        if (int(club['points']) <= places_required):
+            if places_required <= 12 and places_required > 0:
+                flash('Great-booking complete!' + str(places_required) + "spots booked for the " + str(competition))
+                competition['numberOfPlaces'] -= places_required
+                club['points'] -= places_required
+            else:
+                flash('You can book a maximum of 12 spots per comp')
         else:
-            flash('Your club does  not have enough points, or you booked more than 12 spots')
+            flash('Your club does not have enough points')
     else:
-        flash('It is too late to register to this competitions')
+        flash("ERROR : you can t purchase places, it's a past competition")
     return render_template('welcome.html', club=club, competitions=competitions)
 
 
