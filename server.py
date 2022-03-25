@@ -2,6 +2,7 @@ import json
 from flask import Flask, render_template, request, redirect, flash, url_for
 from datetime import datetime
 
+
 """ Private Functions """
 def load_clubs():
     with open('clubs.json') as c:
@@ -46,8 +47,8 @@ def show_summary():
 
 @app.route('/book/<competition>/<club>', methods=['GET'])
 def book(competition, club):
-    found_club = [c for c in clubs if c['name'] == club]
-    found_competition = [c for c in competitions if c['name'] == competition]
+    found_club = [c for c in clubs if c['name'] == club][0]
+    found_competition = [c for c in competitions if c['name'] == competition][0]
     if found_club and found_competition:
         flash("Here is the form to complete")
         return render_template('booking.html', club=found_club, competition=found_competition)
@@ -61,14 +62,19 @@ def purchase_places():
     competition = [c for c in competitions if c['name'] == request.form['competition']][0]
     club = [c for c in clubs if c['name'] == request.form['club']][0]
     places_required = int(request.form['places'])
-    if datetime.now() < datetime.strptime(competition['date'], "%Y-%m-%d %H:%M:%S"):
-        if (int(club['points']) <= places_required) and (places_required <= 12):
-            competition['numberOfPlaces'] = int(competition['numberOfPlaces']) - places_required
-            #  deduct points from the team
-            club['points'] -= places_required
-            flash('Great-booking complete!')
+    time_object = datetime.now()
+    comp_time = datetime.strptime(competition['date'], "%Y-%m-%d %H:%M:%S")
+    # 2022-03-24 12:53:00.151212
+    if time_object < comp_time:
+        if (int(club['points']) <= places_required):
+            if places_required <= 12 and places_required > 0:
+                flash('Great-booking complete!' + str(places_required) + "spots booked for the " + str(competition))
+                competition['numberOfPlaces'] -= places_required
+                club['points'] -= places_required
+            else:
+                flash('You can book a maximum of 12 spots per comp')
         else:
-            flash('Your club does  not have enough points, or you booked more than 12 spots')
+            flash('Your club does not have enough points')
     else:
         flash("ERROR : you can t purchase places, it's a past competition")
     return render_template('welcome.html', club=club, competitions=competitions)
@@ -82,4 +88,4 @@ def show_points():
 @app.route('/logout')
 def logout():
     flash('You disconnected')
-    return redirect(url_for('index'))
+    return render_template('index.html')
