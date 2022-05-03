@@ -1,5 +1,5 @@
 import json
-from flask import Flask, render_template, request, redirect, flash, url_for
+from flask import Flask, render_template, request, flash
 from datetime import datetime
 
 
@@ -21,13 +21,7 @@ app.secret_key = 'something_special'
 clubs = load_clubs()
 competitions = load_competitions()
 
-
-if __name__ == '__main__':
-    app.run(debug=True)
-
-
 """ PUBLIC FUNCTIONS """
-
 
 @app.route('/', methods=['GET'])
 def index():
@@ -35,7 +29,7 @@ def index():
 
 
 """Allows connected to see it's club details(points) and future competitions"""
-@app.route('/showSummary', methods=['POST'])
+@app.route('/showsummary', methods=['POST'])
 def show_summary():
     try:
         club = [club for club in clubs if club['email'] == request.form['email']][0]
@@ -54,10 +48,10 @@ def book(competition, club):
         return render_template('booking.html', club=found_club, competition=found_competition)
     else:
         flash("The competition selected doesn't exists, Something went wrong-please try again")
-        return render_template('welcome.html')
+        return render_template('welcome.html', club=club, competitions=competitions)
 
 
-@app.route('/purchasePlaces', methods=['POST'])
+@app.route('/purchaseplaces', methods=['POST'])
 def purchase_places():
     competition = [c for c in competitions if c['name'] == request.form['competition']][0]
     club = [c for c in clubs if c['name'] == request.form['club']][0]
@@ -75,7 +69,7 @@ def purchase_places():
         else:
             flash('Your club does not have enough points')
     else:
-        flash("ERROR : you can t purchase places, it's a past competition")
+        flash("ERROR : you cannot purchase places, it's a past competition")
     return render_template('welcome.html', club=club, competitions=competitions)
 
 
@@ -84,7 +78,11 @@ def show_points():
    return render_template('rankings.html', club=clubs)
 
 
-@app.route('/logout')
+@app.route('/logout', methods=['GET'])
 def logout():
     flash('You disconnected')
     return render_template('index.html')
+
+
+if __name__ == '__main__':
+    app.run(debug=True)

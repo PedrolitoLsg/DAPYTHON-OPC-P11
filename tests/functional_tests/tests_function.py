@@ -6,11 +6,8 @@ from selenium.webdriver.common.by import By
 from webdriver_manager.chrome import ChromeDriverManager
 import pytest
 
-"""importing unit functions"""
 
-
-
-"""How it is gonna go
+"""Procedure
 First: Land on index page and enter a good email and click on connect
 2nd: Lands on the page /showSummary, clicks on book for a specific competition
 3rd: enters data in the form
@@ -21,6 +18,8 @@ First: Land on index page and enter a good email and click on connect
 
 url_root = 'http://127.0.0.1:5000/'
 driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
+
+
 def End2End():
     time.sleep(3)
     driver.get(url_root)
@@ -47,7 +46,8 @@ def End2End():
     time.sleep(3)
     button_book = driver.find_element(By.ID, "submitbutton")
     button_book.click()
-    driver.quit()
+    """Gives the confirmation page"""
+    assert driver.find_element(By.LINK_TEXT, 'Great-booking complete!')
     return True
 
 
