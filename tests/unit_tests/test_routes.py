@@ -1,6 +1,5 @@
 
 
-
 '''Test the publicly accessible route for points display'''
 def test_rankings_route(client):
     response = client.get('/rankings')
@@ -9,7 +8,6 @@ def test_rankings_route(client):
     assert 'Club name' in response_data
     assert 'Simply Lift' in response_data
 
-test_rankings_route()
 
 """We will here test for the routes"""
 def test_index_route(client):
@@ -29,7 +27,10 @@ def test_logout(client):
 
 """test to purchase place with true data"""
 def test_purchase_places(client):
-    response = client.post('/purchaseplaces', data={'club': 'Simply Lift', 'competition': 'Spring Festival', 'places': 1})
+    response = client.post('/purchaseplaces', data={'club': 'Simply Lift',
+                                                    'competition': 'Spring Festival', 'places': 1
+                                                    }
+                           )
     assert response.status_code == 200
     assert 'complete' in response.data.decode()
 
@@ -41,13 +42,20 @@ def test_can_not_purchase_places_old_comp(client):
 
 
 def test_purchase_too_much_places(client):
-    response = client.post('/purchaseplaces', data={'club': 'She Lifts', 'competition': 'Spring Festival', 'places': 13})
+    response = client.post('/purchaseplaces', data={'club': 'She Lifts',
+                                                    'competition': 'Spring Festival', 'places': 13
+                                                    }
+                           )
     assert response.status_code == 200
     assert 'book a maximum' in response.data.decode()
 
 
 def test_purchase_not_enought_points(client):
-    response = client.post('/purchaseplaces', data={'club': 'Simply Lift', 'competition': 'Spring Festival', 'places': 6})
+    response = client.post('/purchaseplaces', data={'club': 'Simply Lift',
+                                                    'competition': 'Spring Festival',
+                                                    'places': 6
+                                                    }
+                           )
     assert response.status_code == 200
     assert 'does not have enough points' in response.data.decode()
 
