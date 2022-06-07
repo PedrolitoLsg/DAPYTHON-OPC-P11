@@ -1,15 +1,16 @@
 import pytest
-import server
+from server import app, load_clubs, load_competitions
+
+
 
 @pytest.fixture
 def client():
     """ Allows the testing to be launched and under the Testing parameter"""
-    server.app.config['TESTING'] = True
-    client = server.app.test_client()
-    yield client
+    client = app.test_client()
+    return client
 
 
-def mock_loadCompetitions():
+def mock_load_competitions():
     competitions = [
         {
             "name": "Spring Festival",
@@ -30,7 +31,7 @@ def mock_loadCompetitions():
     return competitions
 
 
-def mock_loadClubs():
+def mock_load_clubs():
     clubs = [
         {
             "name": "Simply Lift",
@@ -53,5 +54,6 @@ def mock_loadClubs():
 
 @pytest.fixture
 def mock_competitions_and_clubs(mocker):
-    mocker.patch.object(server, 'competitions', mock_loadCompetitions())
-    mocker.patch.object(server, 'clubs', mock_loadClubs())
+    mocker.patch.object(server, 'competitions', mock_load_competitions())
+    mocker.patch.object(server, 'clubs', mock_load_clubs())
+    return mocker
