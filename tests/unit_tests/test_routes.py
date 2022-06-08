@@ -21,21 +21,13 @@ class Tests:
         assert '<h1>Welcome to the GUDLFT Registration Portal!</h1>' in response_data
 
 
-
     '''Test the publicly accessible route for points display'''
-    """
-    def test_rankings_route():
-        app = Flask(__name__)
-        configure_routes(app)
-        client = app.test_client()
+    def test_rankings_route(self, client):
         response = client.get('/rankings')
         response_data = response.data.decode()
         assert response.status_code == 200
         assert 'Club name' in response_data
         assert 'Simply Lift' in response_data
-    """
-
-
 
 
     """test to logout, response == 200 and data exists"""

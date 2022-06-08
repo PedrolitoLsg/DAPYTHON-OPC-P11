@@ -3,7 +3,6 @@ from flask import Flask, render_template, request, flash
 from datetime import datetime
 
 
-""" Private Functions """
 def load_clubs():
     with open('clubs.json') as c:
         list_of_clubs = json.load(c)['clubs']
@@ -21,7 +20,6 @@ app.secret_key = 'something_special'
 clubs = load_clubs()
 competitions = load_competitions()
 
-""" PUBLIC FUNCTIONS """
 
 @app.route('/', methods=['GET'])
 def index():
@@ -38,6 +36,7 @@ def show_summary():
         flash('Email was not found. Please try again.')
         return render_template('index.html')
 
+
 @app.route('/book/<competition>/<club>', methods=['GET'])
 def book(competition, club):
     found_club = [c for c in clubs if c['name'] == club][0]
@@ -48,8 +47,6 @@ def book(competition, club):
     else:
         flash("The competition selected doesn't exists, Something went wrong-please try again")
         return render_template('welcome.html', club=club, competitions=competitions)
-
-
 
 
 @app.route('/purchaseplaces', methods=['POST'])
@@ -73,11 +70,10 @@ def purchase_places():
         flash("ERROR : you cannot purchase places, it's a past competition")
     return render_template('welcome.html', club=club, competitions=competitions)
 
+
 @app.route('/rankings', methods=['GET'])
 def show_points():
     return render_template('rankings.html', club=clubs)
-
-
 
 
 @app.route('/logout', methods=['GET'])
